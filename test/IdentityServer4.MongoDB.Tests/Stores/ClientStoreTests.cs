@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Autofac;
-using IdentityServer4.Models;
 using IdentityServer4.MongoDB.Mappers;
 using IdentityServer4.MongoDB.Repositories;
 using IdentityServer4.Stores;
@@ -27,8 +26,8 @@ namespace IdentityServer4.MongoDB.Tests.Stores
             {
                 ClientId = Guid.NewGuid().ToString(),
                 ClientName = Guid.NewGuid().ToString(),
-                AllowedGrantTypes = GrantTypes.ResourceOwnerPassword,
-                ClientSecrets = new List<Secret> { new Secret("Secret") }
+                AllowedGrantTypes = Models.GrantTypes.ResourceOwnerPassword,
+                ClientSecrets = new List<Models.Secret> {new Models.Secret("secret")}
             };
             var mapper = _hostContainer.Container.Resolve<IMapper>();
             var repository = _hostContainer.Container.Resolve<IRepository<Entities.Client>>();
@@ -55,8 +54,8 @@ namespace IdentityServer4.MongoDB.Tests.Stores
                     {"foo1", "bar1"},
                     {"foo2", "bar2"},
                 },
-                AllowedGrantTypes = GrantTypes.ResourceOwnerPassword,
-                ClientSecrets = new List<Secret> {new Secret("Secret")}
+                AllowedGrantTypes = Models.GrantTypes.ResourceOwnerPassword,
+                ClientSecrets = new List<Models.Secret> {new Models.Secret("secret")}
             };
             var mapper = _hostContainer.Container.Resolve<IMapper>();
             var repository = _hostContainer.Container.Resolve<IRepository<Entities.Client>>();
