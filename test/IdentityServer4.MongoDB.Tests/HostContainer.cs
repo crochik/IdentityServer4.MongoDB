@@ -5,6 +5,7 @@ using IdentityServer4.MongoDB.Entities;
 using Microsoft.Extensions.DependencyInjection;
 using IdentityServer4.MongoDB.Extensions;
 using IdentityServer4.MongoDB.Repositories;
+using Serilog;
 
 namespace IdentityServer4.MongoDB.Tests
 {
@@ -19,7 +20,12 @@ namespace IdentityServer4.MongoDB.Tests
         {
             var services = new ServiceCollection();
 
-            services.AddLogging();
+            // logging
+            var logger = new LoggerConfiguration()
+                .Enrich.FromLogContext()
+                .WriteTo.Debug()
+                .CreateLogger();
+            services.AddLogging(builder => builder.AddSerilog(logger));
 
             services.AddIdentityServer()
                 .AddConfigurationStore()
@@ -46,6 +52,7 @@ namespace IdentityServer4.MongoDB.Tests
                             var database = scope.Resolve<IRepository<Client>>().Collection.Database;
                             database.Client.DropDatabase(database.DatabaseNamespace.DatabaseName);
                         }
+
                         _isInitialized = true;
                     }
                 }
