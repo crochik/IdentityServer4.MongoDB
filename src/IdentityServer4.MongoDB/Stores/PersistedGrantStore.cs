@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using IdentityServer4.Models;
 using IdentityServer4.MongoDB.Mappers;
@@ -65,12 +64,13 @@ namespace IdentityServer4.MongoDB.Stores
 
         public async Task RemoveAsync(string key)
         {
-            var persistedGrant = await _persistedGrantRepository.AsQueryable().FirstOrDefaultAsync(x => x.Key == key).ConfigureAwait(false);
-            if (persistedGrant != null)
-            {
-                _logger.LogDebug("removing {persistedGrantKey} persisted grant from database", key);
+            var result = await _persistedGrantRepository.Collection
+                .DeleteOneAsync(x => x.Key == key)
+                .ConfigureAwait(false);
 
-                await _persistedGrantRepository.DeleteAsync(persistedGrant).ConfigureAwait(false);
+            if (result.DeletedCount > 0)
+            {
+                _logger.LogDebug("removed {persistedGrantKey} persisted grant from database", key);
             }
             else
             {
@@ -80,22 +80,20 @@ namespace IdentityServer4.MongoDB.Stores
 
         public async Task RemoveAllAsync(string subjectId, string clientId)
         {
-            var persistedGrants = await _persistedGrantRepository.AsQueryable().Where(x => x.SubjectId == subjectId && x.ClientId == clientId).ToListAsync().ConfigureAwait(false);
+            var result = await _persistedGrantRepository.Collection
+                .DeleteManyAsync(x => x.SubjectId == subjectId && x.ClientId == clientId)
+                .ConfigureAwait(false);
 
-            _logger.LogDebug("removing {persistedGrantCount} persisted grants from database for subject {subjectId}, clientId {clientId}", persistedGrants.Count, subjectId, clientId);
-
-            var keys = persistedGrants.Select(x => x.Key).ToArray();
-            await _persistedGrantRepository.DeleteAsync(x => keys.Contains(x.Key)).ConfigureAwait(false);
+            _logger.LogDebug("removed {persistedGrantCount} persisted grants from database for subject {subjectId}, clientId {clientId}", result.DeletedCount, subjectId, clientId);
         }
 
         public async Task RemoveAllAsync(string subjectId, string clientId, string type)
         {
-            var persistedGrants = await _persistedGrantRepository.AsQueryable().Where(x => x.SubjectId == subjectId && x.ClientId == clientId && x.Type == type).ToListAsync().ConfigureAwait(false);
+            var result = await _persistedGrantRepository.Collection
+                .DeleteManyAsync(x => x.SubjectId == subjectId && x.ClientId == clientId && x.Type == type)
+                .ConfigureAwait(false);
 
-            _logger.LogDebug("removing {persistedGrantCount} persisted grants from database for subject {subjectId}, clientId {clientId}, grantType {persistedGrantType}", persistedGrants.Count, subjectId, clientId, type);
-
-            var keys = persistedGrants.Select(x => x.Key).ToArray();
-            await _persistedGrantRepository.DeleteAsync(x => keys.Contains(x.Key)).ConfigureAwait(false);
+            _logger.LogDebug("removed {persistedGrantCount} persisted grants from database for subject {subjectId}, clientId {clientId}, grantType {persistedGrantType}", result.DeletedCount, subjectId, clientId, type);
         }
     }
 }
