@@ -116,12 +116,22 @@ namespace IdentityServer4.MongoDB.Tokens
             {
                 _logger.LogTrace("Querying for expired grants to remove");
 
-                var found = Int32.MaxValue;
+                var found = int.MaxValue;
 
                 using (var serviceScope = _serviceProvider.GetRequiredService<IServiceScopeFactory>().CreateScope())
                 {
-                    
                     var persistedGrantRepository = serviceScope.ServiceProvider.GetService<IRepository<PersistedGrant>>();
+
+                    var tokenCleanupNotification = serviceScope.ServiceProvider.GetService<IOperationalStoreNotification>();
+                    if (tokenCleanupNotification == null)
+                    {
+                        var result = await persistedGrantRepository.Collection
+                            .DeleteManyAsync(x => x.Expiration < DateTimeOffset.UtcNow)
+                            .ConfigureAwait(false);
+
+                        _logger.LogInformation("Clearing {tokenCount} tokens", result.DeletedCount);
+                        return;
+                    }
 
                     while (found >= _options.TokenCleanupBatchSize)
                     {
@@ -140,11 +150,7 @@ namespace IdentityServer4.MongoDB.Tokens
                             await persistedGrantRepository.DeleteAsync(x => ids.Contains(x.Id)).ConfigureAwait(false);
 
                             // notification
-                            var tokenCleanupNotification = serviceScope.ServiceProvider.GetService<IOperationalStoreNotification>();
-                            if (tokenCleanupNotification != null)
-                            {
-                                await tokenCleanupNotification.PersistedGrantsRemovedAsync(expired);
-                            }
+                            await tokenCleanupNotification.PersistedGrantsRemovedAsync(expired);
                         }
                     }
                 }
