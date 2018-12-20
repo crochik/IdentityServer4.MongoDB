@@ -129,7 +129,7 @@ namespace IdentityServer4.MongoDB.Tokens
                             .DeleteManyAsync(x => x.Expiration < DateTimeOffset.UtcNow)
                             .ConfigureAwait(false);
 
-                        _logger.LogInformation("Clearing {tokenCount} tokens", result.DeletedCount);
+                        _logger.LogInformation("Cleared {tokenCount} tokens", result.DeletedCount);
                         return;
                     }
 
