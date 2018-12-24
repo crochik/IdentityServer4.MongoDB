@@ -126,7 +126,7 @@ namespace IdentityServer4.MongoDB.Tokens
                     if (tokenCleanupNotification == null)
                     {
                         var result = await persistedGrantRepository.Collection
-                            .DeleteManyAsync(x => x.Expiration < DateTimeOffset.UtcNow)
+                            .DeleteManyAsync(x => x.Expiration < DateTime.UtcNow)
                             .ConfigureAwait(false);
 
                         _logger.LogInformation("Cleared {tokenCount} tokens", result.DeletedCount);
@@ -136,7 +136,7 @@ namespace IdentityServer4.MongoDB.Tokens
                     while (found >= _options.TokenCleanupBatchSize)
                     {
                         var expired = await persistedGrantRepository.AsQueryable()
-                            .Where(x => x.Expiration < DateTimeOffset.UtcNow)
+                            .Where(x => x.Expiration < DateTime.UtcNow)
                             .Take(_options.TokenCleanupBatchSize)
                             .ToListAsync()
                             .ConfigureAwait(false);
