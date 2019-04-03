@@ -12,14 +12,14 @@
     <PackageProjectUrl>https://github.com/Selz/IdentityServer4.MongoDB</PackageProjectUrl>
     <PackageLicenseUrl>https://github.com/Selz/IdentityServer4.MongoDB/blob/release/LICENSE</PackageLicenseUrl>
 
-    <Version>2.0.4</Version>
+    <Version>2.0.5</Version>
     <Copyright>Copyright ©2016 Selz.com Pty Ltd</Copyright>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="8.0.0" />
-    <PackageReference Include="IdentityServer4" Version="2.3.2" />
-    <PackageReference Include="MongoDB.Driver" Version="2.7.2" />
+    <PackageReference Include="IdentityServer4" Version="2.4.0" />
+    <PackageReference Include="MongoDB.Driver" Version="2.8.0" />
   </ItemGroup>
 
 </Project>
