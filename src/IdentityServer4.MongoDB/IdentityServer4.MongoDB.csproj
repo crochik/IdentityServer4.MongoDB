@@ -2,8 +2,6 @@
 
   <PropertyGroup>
     <PackageId>Selz.IdentityServer4.MongoDB</PackageId>
-    <TargetFrameworks>netstandard2.0</TargetFrameworks>
-
     <Description>MongoDB persistence layer for IdentityServer4</Description>
     <Authors>Jing Wu</Authors>
     <AssemblyName>IdentityServer4.MongoDB</AssemblyName>
@@ -16,6 +14,8 @@
     <Copyright>Copyright ©2016 Selz.com Pty Ltd</Copyright>
   </PropertyGroup>
 
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' " />
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' " />
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="8.0.0" />
     <PackageReference Include="IdentityServer4" Version="2.4.0" />
