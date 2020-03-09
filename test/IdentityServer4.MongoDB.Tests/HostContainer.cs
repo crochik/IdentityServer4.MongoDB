@@ -50,13 +50,13 @@ namespace IdentityServer4.MongoDB.Tests
                 {
                     var storeOptions = configServiceProvider.GetService<IOptions<StoreOptions>>().Value;
                     options.ConnectionString = storeOptions.ConnectionString;
-                    options.CollectionNamePrefix = storeOptions.ConnectionString;
+                    options.CollectionNamePrefix = storeOptions.CollectionNamePrefix;
                 })
                 .AddOperationalStore(options =>
                 {
                     var storeOptions = configServiceProvider.GetService<IOptions<StoreOptions>>().Value;
                     options.ConnectionString = storeOptions.ConnectionString;
-                    options.CollectionNamePrefix = storeOptions.ConnectionString;
+                    options.CollectionNamePrefix = storeOptions.CollectionNamePrefix;
                 });
 
             var containerBuilder = new ContainerBuilder();
