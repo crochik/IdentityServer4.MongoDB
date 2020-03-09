@@ -1,6 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
+    <Version Condition=" '$(NUGET_BUILD_NUMBER)' == '' ">2.1.0-local</Version>
+    <Version Condition=" '$(NUGET_BUILD_NUMBER)' != '' ">2.1.$(NUGET_BUILD_NUMBER)</Version>
+
     <PackageId>Selz.IdentityServer4.MongoDB</PackageId>
     <TargetFrameworks>netstandard2.0</TargetFrameworks>
 
@@ -12,7 +15,6 @@
     <PackageProjectUrl>https://github.com/Selz/IdentityServer4.MongoDB</PackageProjectUrl>
     <PackageLicenseUrl>https://github.com/Selz/IdentityServer4.MongoDB/blob/release/LICENSE</PackageLicenseUrl>
 
-    <Version>2.0.6</Version>
     <Copyright>Copyright ©2016 Selz.com Pty Ltd</Copyright>
   </PropertyGroup>
 
