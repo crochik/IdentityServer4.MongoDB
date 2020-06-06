@@ -1,7 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
+    <Version Condition=" '$(NUGET_BUILD_NUMBER)' == '' ">2.1.0-local</Version>
+    <Version Condition=" '$(NUGET_BUILD_NUMBER)' != '' ">2.1.$(NUGET_BUILD_NUMBER)</Version>
+
     <PackageId>Selz.IdentityServer4.MongoDB</PackageId>
+    <TargetFrameworks>netstandard2.0</TargetFrameworks>
+
     <Description>MongoDB persistence layer for IdentityServer4</Description>
     <Authors>Jing Wu</Authors>
     <AssemblyName>IdentityServer4.MongoDB</AssemblyName>
@@ -10,16 +15,13 @@
     <PackageProjectUrl>https://github.com/Selz/IdentityServer4.MongoDB</PackageProjectUrl>
     <PackageLicenseUrl>https://github.com/Selz/IdentityServer4.MongoDB/blob/release/LICENSE</PackageLicenseUrl>
 
-    <Version>2.0.5</Version>
     <Copyright>Copyright ©2016 Selz.com Pty Ltd</Copyright>
   </PropertyGroup>
 
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' " />
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' " />
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="9.0.0" />
-    <PackageReference Include="IdentityServer4" Version="2.4.0" />
-    <PackageReference Include="MongoDB.Driver" Version="2.10.4" />
+    <PackageReference Include="IdentityServer4" Version="2.5.2" />
+    <PackageReference Include="MongoDB.Driver" Version="2.8.1" />
   </ItemGroup>
 
 </Project>
